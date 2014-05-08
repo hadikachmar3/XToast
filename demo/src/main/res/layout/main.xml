@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <Button android:id="@+id/btn_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="show"
+            android:text="@string/btn_normal" />
+
+    <Button android:id="@+id/btn_duration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="show"
+            android:text="@string/btn_duration" />
+
+    <Button android:id="@+id/btn_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="show"
+            android:text="@string/btn_background" />
+
+    <Button android:id="@+id/btn_anim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="show"
+            android:text="@string/btn_anim" />
+
+    <Button android:id="@+id/btn_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="show"
+            android:text="@string/btn_text" />
+
+    <Button android:id="@+id/btn_nowait"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="show"
+            android:text="@string/btn_nowait" />
+</LinearLayout>
+

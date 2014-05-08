@@ -1,4 +1,4 @@
 XToast
 ======
 
-Mini SuperToast.
+Custom toast(Simplified version of SuperToasts).
