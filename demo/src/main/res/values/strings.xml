@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MainActivity</string>
     <string name="btn_normal">Normal</string>
+    <string name="btn_text">Custom Text</string>
     <string name="btn_duration">Custom Duration</string>
-    <string name="btn_background">Custom Background</string>
+    <string name="btn_gravity">Custom Gravity</string>
+    <string name="btn_background_color">Custom Background Color</string>
+    <string name="btn_background_res">Custom Background Resource</string>
     <string name="btn_anim">Custom Animation</string>
-    <string name="btn_text">Text</string>
-    <string name="btn_nowait">No Wait</string>
+    <string name="btn_cover">Cover Previous</string>
+    <string name="btn_button">Custom Button</string>
 </resources>

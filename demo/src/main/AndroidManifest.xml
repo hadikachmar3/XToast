@@ -9,11 +9,11 @@
             android:targetSdkVersion="19" />
 
     <application
-            android:label="@string/app_name"
+            android:label="XToast Demo"
             android:icon="@drawable/ic_launcher">
         <activity
                 android:name="MainActivity"
-                android:label="@string/app_name">
+                android:label="XToast Demo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

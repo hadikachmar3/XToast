@@ -4,40 +4,66 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <Button android:id="@+id/btn_normal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="show"
-            android:text="@string/btn_normal" />
+    <Button
+        android:id="@+id/btn_normal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="show"
+        android:text="@string/btn_normal" />
 
-    <Button android:id="@+id/btn_duration"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="show"
-            android:text="@string/btn_duration" />
+    <Button
+        android:id="@+id/btn_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="show"
+        android:text="@string/btn_text" />
 
-    <Button android:id="@+id/btn_background"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="show"
-            android:text="@string/btn_background" />
+    <Button
+        android:id="@+id/btn_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="show"
+        android:text="@string/btn_duration" />
 
-    <Button android:id="@+id/btn_anim"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="show"
-            android:text="@string/btn_anim" />
+    <Button
+        android:id="@+id/btn_gravity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="show"
+        android:text="@string/btn_gravity" />
 
-    <Button android:id="@+id/btn_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="show"
-            android:text="@string/btn_text" />
+    <Button
+        android:id="@+id/btn_background_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="show"
+        android:text="@string/btn_background_color" />
 
-    <Button android:id="@+id/btn_nowait"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="show"
-            android:text="@string/btn_nowait" />
+    <Button
+        android:id="@+id/btn_background_res"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="show"
+        android:text="@string/btn_background_res" />
+
+    <Button
+        android:id="@+id/btn_anim"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="show"
+        android:text="@string/btn_anim" />
+
+    <Button
+        android:id="@+id/btn_cover"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="show"
+        android:text="@string/btn_cover" />
+
+    <Button
+        android:id="@+id/btn_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="show"
+        android:text="@string/btn_button" />
 </LinearLayout>
-
