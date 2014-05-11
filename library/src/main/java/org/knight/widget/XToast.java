@@ -148,7 +148,7 @@ public class XToast {
         if (mXToastView == null) {
             return this;
         }
-        //((ViewStub) mXToastView.findViewById(R.id.xtoast_viewstub)).inflate();
+        ((ViewStub) mXToastView.findViewById(R.id.xtoast_viewstub)).inflate();
         mButton = (Button) mXToastView.findViewById(R.id.xtoast_button);
         if (mButton != null) {
             mButton.setText(text);
