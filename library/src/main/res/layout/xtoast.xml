@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/xtoast_root_layout"
-    android:background="@android:drawable/toast_frame"
+    android:background="@drawable/xtoast_background"
     android:orientation="horizontal"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -14,24 +14,12 @@
         android:layout_gravity="center"
         android:gravity="center" />
 
-    <LinearLayout
-        android:id="@+id/xtoast_button_layout"
-        android:layout_marginLeft="10dp"
+    <ViewStub
+        android:id="@+id/xtoast_viewstub"
         android:visibility="gone"
+        android:layout_marginLeft="10dp"
+        android:layout="@layout/xtoast_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <View
-            android:background="@android:color/darker_gray"
-            android:layout_width="1px"
-            android:layout_height="match_parent" />
-
-        <Button
-            android:id="@+id/xtoast_button"
-            android:layout_marginLeft="10dp"
-            android:background="@android:color/transparent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -4,10 +4,7 @@ import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.os.Message;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.WindowManager;
+import android.view.*;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -34,8 +31,6 @@ public class XToast {
     private View mXToastView;
     private LinearLayout mRootLayout;
     private TextView mTextView;
-
-    private LinearLayout mButtonLayout;
     private Button mButton;
 
     private WindowManager mWindowManager;
@@ -43,8 +38,6 @@ public class XToast {
 
     private int mDuration;
     private boolean mCover;
-
-    private boolean mShowButton;
 
     public static XToast create(Context ctx, CharSequence text) {
         if (ctx == null || text == null || text.length() == 0) {
@@ -66,9 +59,6 @@ public class XToast {
         mRootLayout = (LinearLayout) mXToastView.findViewById(R.id.xtoast_root_layout);
         mTextView = (TextView) mXToastView.findViewById(R.id.xtoast_text);
 
-        mButtonLayout = (LinearLayout) mXToastView.findViewById(R.id.xtoast_button_layout);
-        mButton = (Button) mXToastView.findViewById(R.id.xtoast_button);
-
         mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
         mWindowManagerLayoutParams = new LayoutParams();
     }
@@ -87,12 +77,10 @@ public class XToast {
         if (mWindowManagerLayoutParams.gravity == 0) {
             mWindowManagerLayoutParams.gravity = Gravity.CENTER;
         }
-        if (mShowButton) {
-            mWindowManagerLayoutParams.flags = LayoutParams.FLAG_KEEP_SCREEN_ON;
-            mButtonLayout.setVisibility(View.VISIBLE);
-        } else {
+        if (mButton == null) {
             mWindowManagerLayoutParams.flags |= LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_NOT_TOUCHABLE;
-            mButtonLayout.setVisibility(View.GONE);
+        } else {
+            mWindowManagerLayoutParams.flags = LayoutParams.FLAG_KEEP_SCREEN_ON;
         }
     }
 
@@ -157,7 +145,11 @@ public class XToast {
     }
 
     public XToast withButton(CharSequence text, final ButtonClickListener listener) {
-        mShowButton = true;
+        if (mXToastView == null) {
+            return this;
+        }
+        //((ViewStub) mXToastView.findViewById(R.id.xtoast_viewstub)).inflate();
+        mButton = (Button) mXToastView.findViewById(R.id.xtoast_button);
         if (mButton != null) {
             mButton.setText(text);
             mButton.setOnClickListener(new View.OnClickListener() {
@@ -242,7 +234,7 @@ public class XToast {
                     wm.addView(v, params);
                     Message msg = Message.obtain(this, 0, xtoast);
                     if (msg != null) {
-                        sendMessageDelayed(msg, xtoast.mDuration + 200);
+                        sendMessageDelayed(msg, xtoast.mDuration + 500);
                     }
                 }
             }

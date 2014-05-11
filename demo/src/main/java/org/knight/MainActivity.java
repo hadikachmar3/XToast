@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
     }
 
     private void showBackgroundResource() {
-        XToast.create(this, "Background Resource").withBackgroundResource(R.drawable.xtoast_background).show();
+        XToast.create(this, "Background Resource").withBackgroundResource(R.drawable.xtoast_custom_bg).show();
     }
 
     private void showGravity() {
