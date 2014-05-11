@@ -1,6 +1,6 @@
 XToast
 ====
-A simple custom toast(Simplified version of SuperToasts).
+A simple android custom toast(Simplified version of SuperToasts).
 
 ### Usage
 
