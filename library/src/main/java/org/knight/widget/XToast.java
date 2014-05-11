@@ -75,7 +75,7 @@ public class XToast {
             mWindowManagerLayoutParams.windowAnimations = Anim.TOAST;
         }
         if (mWindowManagerLayoutParams.gravity == 0) {
-            mWindowManagerLayoutParams.gravity = Gravity.CENTER;
+            mWindowManagerLayoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
         }
         if (mButton == null) {
             mWindowManagerLayoutParams.flags |= LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_NOT_TOUCHABLE;
@@ -86,7 +86,7 @@ public class XToast {
 
     public void show() {
         configure();
-        XToastQueue.getInstance().add(this);
+        XToastQueue.getInstance().enqueue(this);
     }
 
     public void dismiss() {
@@ -193,7 +193,7 @@ public class XToast {
         private XToastQueue() {
         }
 
-        private void add(XToast xtoast) {
+        private void enqueue(XToast xtoast) {
             if (xtoast != null) {
                 if (xtoast.mCover) {
                     XToast x = queue.peek();

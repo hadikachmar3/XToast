@@ -43,11 +43,11 @@ public class MainActivity extends Activity {
     }
 
     private void showCover() {
-        XToast.create(this, "Cover Previou").withCover(true).show();
+        XToast.create(this, "Cover Previous").withCover(true).show();
     }
 
     private void showButton() {
-        XToast.create(this, "Button").withButton("Click", new XToast.ButtonClickListener() {
+        XToast.create(this, "Button").withGravity(Gravity.CENTER, 0, 0).withButton("Click", new XToast.ButtonClickListener() {
             @Override
             public void onClick(XToast xtoast) {
                 xtoast.dismiss();

@@ -12,7 +12,7 @@
 
     <Button
         android:id="@+id/xtoast_button"
-        android:layout_marginLeft="10dp"
+        android:gravity="center"
         android:background="@drawable/xtoast_button_selector"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
