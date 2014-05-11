@@ -1,3 +1,5 @@
+XToast
+====
 A simple custom toast(Simplified version of SuperToasts).
 
 ### Usage
