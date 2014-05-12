@@ -52,8 +52,8 @@ withCover(boolean)
 ```
 Cancel all the other toasts before this one shows.
 
-##### 7) Integrate with a button(text/event)
+##### 7) Integrate with a button(text/icon/event)
 ```java
-withButton(Charsequence, XToast.ButtonClickListener)
+withButton(Charsequence, Drawable, XToast.ButtonClickListener)
 ```
 
