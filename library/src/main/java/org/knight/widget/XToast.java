@@ -1,7 +1,24 @@
+/*
+ * Copyright (C) 2014 The XToast Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.knight.widget;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.view.*;
@@ -144,14 +161,23 @@ public class XToast {
         return this;
     }
 
-    public XToast withButton(CharSequence text, final ButtonClickListener listener) {
+    public XToast withButton(CharSequence text, Drawable icon, final ButtonClickListener listener) {
+        if (text == null && icon == null) {
+            return this;
+        }
         if (mXToastView == null) {
             return this;
         }
         ((ViewStub) mXToastView.findViewById(R.id.xtoast_viewstub)).inflate();
         mButton = (Button) mXToastView.findViewById(R.id.xtoast_button);
         if (mButton != null) {
-            mButton.setText(text);
+            if (text != null) {
+                mButton.setText(text);
+            }
+            if (icon != null) {
+                icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
+                mButton.setCompoundDrawables(icon, null, null, null);
+            }
             mButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -208,7 +234,7 @@ public class XToast {
                     queue.add(xtoast);
                 }
             }
-            showNext();
+            next();
         }
 
         private void remove(XToast xtoast) {
@@ -222,7 +248,7 @@ public class XToast {
                     wm.removeView(v);
                 }
             }
-            showNext();
+            next();
         }
 
         private void show(XToast xtoast) {
@@ -240,7 +266,7 @@ public class XToast {
             }
         }
 
-        private void showNext() {
+        private void next() {
             XToast x;
             synchronized (queue) {
                 x = queue.peek();
