@@ -26,6 +26,7 @@
 
     <TextView
         android:id="@+id/xtoast_text"
+        android:paddingLeft="16dp"
         android:layout_weight="3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -34,7 +35,7 @@
     <ViewStub
         android:id="@+id/xtoast_viewstub"
         android:layout_weight="1"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="16dp"
         android:layout="@layout/xtoast_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content" />

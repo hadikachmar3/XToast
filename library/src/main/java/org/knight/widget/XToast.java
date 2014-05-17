@@ -63,6 +63,14 @@ public class XToast {
         return new XToast(ctx).withText(text);
     }
 
+    public static void cancelAll() {
+
+    }
+
+    public static void cancelCurrent() {
+
+    }
+
     private XToast(Context ctx) {
         mContext = ctx;
         initViews();
@@ -94,10 +102,11 @@ public class XToast {
         if (mWindowManagerLayoutParams.gravity == 0) {
             mWindowManagerLayoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
         }
+        mWindowManagerLayoutParams.flags = LayoutParams.FLAG_NOT_FOCUSABLE;
         if (mButton == null) {
-            mWindowManagerLayoutParams.flags |= LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_NOT_TOUCHABLE;
+            mWindowManagerLayoutParams.flags |= LayoutParams.FLAG_NOT_TOUCHABLE;
         } else {
-            mWindowManagerLayoutParams.flags = LayoutParams.FLAG_KEEP_SCREEN_ON;
+            mWindowManagerLayoutParams.flags |= LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
         }
     }
 
@@ -260,7 +269,7 @@ public class XToast {
                     wm.addView(v, params);
                     Message msg = Message.obtain(this, 0, xtoast);
                     if (msg != null) {
-                        sendMessageDelayed(msg, xtoast.mDuration + 500);
+                        sendMessageDelayed(msg, xtoast.mDuration + 1000);
                     }
                 }
             }
