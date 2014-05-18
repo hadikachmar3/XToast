@@ -32,19 +32,19 @@ public class MainActivity extends Activity {
     }
 
     private void showNormal() {
-        XToast.create(this, "Normal").show();
+        XToast.create(this, "Normal Toast").show();
     }
 
     private void showCustomText() {
-        XToast.create(this, "CustomText").withTextColor(Color.parseColor("#00FF00")).withTextSize(20).show();
+        XToast.create(this, "CustomText Toast").withTextColor(Color.parseColor("#00FF00")).withTextSize(20).show();
     }
 
     private void showDuration() {
-        XToast.create(this, "Duration").withDuration(XToast.Duration.LONG).show();
+        XToast.create(this, "Long Duration").withDuration(XToast.Duration.LONG).show();
     }
 
     private void showBackgroundColor() {
-        XToast.create(this, "Background Color").withBackgroundColor(Color.parseColor("#FF0000")).show();
+        XToast.create(this, "Background Color(Red)").withBackgroundColor(Color.parseColor("#FF0000")).show();
     }
 
     private void showBackgroundResource() {
@@ -52,26 +52,34 @@ public class MainActivity extends Activity {
     }
 
     private void showGravity() {
-        XToast.create(this, "Gravity").withGravity(Gravity.TOP, 60, 60).show();
+        XToast.create(this, "Gravity Top and 60px Offset").withGravity(Gravity.TOP, 60, 60).show();
     }
 
     private void showAnim() {
-        XToast.create(this, "Animation").withAnimation(XToast.Anim.POPUP).show();
+        XToast.create(this, "Animation Popup").withAnimation(XToast.Anim.POPUP).show();
     }
 
     private void showCover() {
-        XToast.create(this, "Cover Previous").withCover(true).show();
+        XToast.create(this, "Cover Previous Toast").withCover(true).show();
     }
 
     private void showButton() {
         Drawable d = getResources().getDrawable(R.drawable.icon_undo);
-        XToast.create(this, "Button").withButton("撤销", d, new XToast.ButtonClickListener() {
+        XToast.create(this, "Toast with Button").withButton("Undo", null, new XToast.ButtonClickListener() {
             @Override
             public void onClick(XToast xtoast) {
                 xtoast.dismiss();
                 XToast.create(MainActivity.this, "Click Event").show();
             }
         }).show();
+    }
+
+    private void cancelCurrent() {
+        XToast.cancelCurrent();
+    }
+
+    private void cancelAll() {
+        XToast.cancelAll();
     }
 
     public void show(View v) {
@@ -110,6 +118,14 @@ public class MainActivity extends Activity {
 
             case R.id.btn_button:
                 showButton();
+                break;
+
+            case R.id.btn_cancel_current:
+                cancelCurrent();
+                break;
+
+            case R.id.btn_cancel_all:
+                cancelAll();
                 break;
 
             default:

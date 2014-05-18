@@ -64,11 +64,11 @@ public class XToast {
     }
 
     public static void cancelAll() {
-
+        XToastQueue.getInstance().removeAll();
     }
 
     public static void cancelCurrent() {
-
+        XToastQueue.getInstance().removeCurrent();
     }
 
     private XToast(Context ctx) {
@@ -251,12 +251,33 @@ public class XToast {
                 synchronized (queue) {
                     queue.remove(xtoast);
                 }
-                WindowManager wm = xtoast.mWindowManager;
-                View v = xtoast.mXToastView;
-                if (wm != null && v != null && xtoast.isShown()) {
-                    wm.removeView(v);
-                }
+                dismiss(xtoast);
             }
+            next();
+        }
+
+        private void removeCurrent() {
+            XToast x;
+            synchronized (queue) {
+                x = queue.poll();
+            }
+            if (x == null) {
+                return;
+            }
+            dismiss(x);
+            next();
+        }
+
+        private void removeAll() {
+            XToast x;
+            synchronized (queue) {
+                x = queue.peek();
+                queue.clear();
+            }
+            if (x == null) {
+                return;
+            }
+            dismiss(x);
             next();
         }
 
@@ -272,6 +293,17 @@ public class XToast {
                         sendMessageDelayed(msg, xtoast.mDuration + 1000);
                     }
                 }
+            }
+        }
+
+        private void dismiss(XToast xtoast) {
+            if (xtoast == null) {
+                return;
+            }
+            WindowManager wm = xtoast.mWindowManager;
+            View v = xtoast.mXToastView;
+            if (wm != null && v != null && xtoast.isShown()) {
+                wm.removeView(v);
             }
         }
 
