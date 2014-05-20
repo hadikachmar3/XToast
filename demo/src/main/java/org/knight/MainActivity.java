@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
 
     private void showButton() {
         Drawable d = getResources().getDrawable(R.drawable.icon_undo);
-        XToast.create(this, "Toast with Button").withButton("Undo", null, new XToast.ButtonClickListener() {
+        XToast.create(this, "Toast with Button").withButton("Undo", d, new XToast.ButtonClickListener() {
             @Override
             public void onClick(XToast xtoast) {
                 xtoast.dismiss();
