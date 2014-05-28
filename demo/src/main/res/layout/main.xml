@@ -52,6 +52,13 @@
             android:text="@string/btn_gravity" />
 
         <Button
+            android:id="@+id/btn_position"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="show"
+            android:text="@string/btn_position" />
+
+        <Button
             android:id="@+id/btn_background_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

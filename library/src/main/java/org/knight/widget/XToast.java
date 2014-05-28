@@ -99,7 +99,7 @@ public class XToast {
         if (mWindowManagerLayoutParams.windowAnimations == 0) {
             mWindowManagerLayoutParams.windowAnimations = Anim.TOAST;
         }
-        if (mWindowManagerLayoutParams.gravity == 0) {
+        if (mWindowManagerLayoutParams.gravity == 0 && mWindowManagerLayoutParams.x == 0 && mWindowManagerLayoutParams.y == 0) {
             mWindowManagerLayoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
         }
         mWindowManagerLayoutParams.flags = LayoutParams.FLAG_NOT_FOCUSABLE;
@@ -165,6 +165,77 @@ public class XToast {
         return this;
     }
 
+    public XToast withPosition(View view, int position, int xOffset, int yOffset) {
+        int[] pos = new int[2];
+        view.getLocationOnScreen(pos);
+        switch (position) {
+            case Position.LEFT | Position.TOP:
+                xOffset += pos[0];
+                yOffset += pos[1];
+                break;
+
+            case Position.LEFT | Position.CENTER:
+                xOffset += pos[0];
+                yOffset += pos[1] + view.getHeight() / 2;
+                break;
+
+            case Position.LEFT | Position.BOTTOM:
+                xOffset += pos[0];
+                yOffset += pos[1] + view.getHeight();
+                break;
+
+            case Position.CENTER | Position.TOP:
+                xOffset += pos[0] + view.getWidth() / 2;
+                yOffset += pos[1];
+                break;
+
+            case Position.CENTER:
+                xOffset += pos[0] + view.getWidth() / 2;
+                yOffset += pos[1] + view.getHeight() / 2;
+                break;
+
+            case Position.CENTER | Position.BOTTOM:
+                xOffset += pos[0] + view.getWidth() / 2;
+                yOffset += pos[1] + view.getHeight();
+                break;
+
+            case Position.RIGHT | Position.TOP:
+                xOffset += pos[0] + view.getWidth();
+                yOffset += pos[1];
+                break;
+
+            case Position.RIGHT | Position.CENTER:
+                xOffset += pos[0] + view.getWidth();
+                yOffset += pos[1] + view.getHeight() / 2;
+                break;
+
+            case Position.RIGHT | Position.BOTTOM:
+                xOffset += pos[0] + view.getWidth();
+                yOffset += pos[1] + view.getHeight();
+                break;
+
+            case Position.LEFT:
+            case Position.TOP:
+                //equals to (LEFT | TOP)
+                xOffset += pos[0];
+                yOffset += pos[1];
+                break;
+
+            case Position.RIGHT:
+                //equals to (RIGHT | TOP)
+                xOffset += pos[0] + view.getWidth();
+                yOffset += pos[1];
+                break;
+
+            case Position.BOTTOM:
+                //equals to (LEFT | BOTTOM)
+                xOffset += pos[0];
+                yOffset += pos[1] + view.getHeight();
+                break;
+        }
+        return withGravity(Gravity.TOP | Gravity.LEFT, xOffset, yOffset);
+    }
+
     public XToast withCover(boolean cover) {
         mCover = cover;
         return this;
@@ -208,6 +279,14 @@ public class XToast {
         public static final int SCALE = android.R.style.Animation_Dialog;
         public static final int POPUP = android.R.style.Animation_InputMethod;
         public static final int FLY = android.R.style.Animation_Translucent;
+    }
+
+    public static class Position {
+        public static final int LEFT = 0x0001;
+        public static final int TOP = LEFT << 1;
+        public static final int RIGHT = LEFT << 2;
+        public static final int BOTTOM = LEFT << 3;
+        public static final int CENTER = LEFT << 4;
     }
 
     private static class XToastQueue extends Handler {

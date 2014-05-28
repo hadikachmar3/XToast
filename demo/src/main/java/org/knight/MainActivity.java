@@ -43,16 +43,21 @@ public class MainActivity extends Activity {
         XToast.create(this, "Long Duration").withDuration(XToast.Duration.LONG).show();
     }
 
+    private void showGravity() {
+        XToast.create(this, "Gravity Top and 60px Offset").withGravity(Gravity.TOP, 60, 60).show();
+    }
+
+    private void showPosition() {
+        View v = findViewById(R.id.btn_position);
+        XToast.create(this, "Beside View").withPosition(v, XToast.Position.LEFT, 0, 0).show();
+    }
+
     private void showBackgroundColor() {
         XToast.create(this, "Background Color(Red)").withBackgroundColor(Color.parseColor("#FF0000")).show();
     }
 
     private void showBackgroundResource() {
         XToast.create(this, "Background Resource").withBackgroundResource(R.drawable.xtoast_custom_bg).show();
-    }
-
-    private void showGravity() {
-        XToast.create(this, "Gravity Top and 60px Offset").withGravity(Gravity.TOP, 60, 60).show();
     }
 
     private void showAnim() {
@@ -98,6 +103,10 @@ public class MainActivity extends Activity {
 
             case R.id.btn_gravity:
                 showGravity();
+                break;
+
+            case R.id.btn_position:
+                showPosition();
                 break;
 
             case R.id.btn_background_color:
