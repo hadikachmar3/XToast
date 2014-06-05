@@ -27,7 +27,7 @@ withTextColor(int)
 ```java
 withDuration(int)
 ```
-There are several build-in duration in XToast.Duration.
+There are several build-in duration in `XToast.Duration`.
 
 ##### 3) Background color/resource
 ```java
@@ -39,7 +39,7 @@ withBackgroundResource(int)
 ```java
 withAnimation(int)
 ```
-There are several built-in animations in XToast.Anim.
+There are several built-in animations in `XToast.Anim`.
 
 ##### 5) Gravity and offset
 ```java
