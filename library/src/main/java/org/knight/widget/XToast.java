@@ -33,12 +33,13 @@ import java.util.LinkedList;
  * Custom toast, simplified version of SuperToasts.
  * <p/>
  * Now supports the following configurations:</br>
- * 1. Text size/color</br>
- * 2. Background resource/color</br>
- * 3. Animation</br>
- * 4. Gravity and offset</br>
- * 5. Cover previous toast</br>
- * 6. Integrate a button in the toast(text/icon/event)
+ * 1. Text size/color.</br>
+ * 2. Background resource/color.</br>
+ * 3. Animation.</br>
+ * 4. Gravity and offset.</br>
+ * 5. Cover previous toast.</br>
+ * 6. Integrate a button in the toast(text/icon/event).</br>
+ * 7. Relative position to a specified view.
  *
  * @author knight
  */
