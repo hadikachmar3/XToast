@@ -2,6 +2,13 @@ XToast
 ====
 A simple android custom toast(Simplified version of SuperToasts).
 
+## Screenshots
+
+![Custom Text](screenshots/Screenshot_1.png)
+![Custom Position](screenshots/Screenshot_2.png)
+![Button integration](screenshots/Screenshot_3.png)
+![Custom Background color](screenshots/Screenshot_4.png)
+
 ## Usage
 
 - Basic
