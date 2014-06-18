@@ -68,9 +68,14 @@ public class MainActivity extends Activity {
         XToast.create(this, "Cover Previous Toast").withCover(true).show();
     }
 
+    /**
+     * If you want only to show the single button,
+     * pass null or empty string to the second param for create().
+     */
     private void showButton() {
         Drawable d = getResources().getDrawable(R.drawable.icon_undo);
-        XToast.create(this, "Toast with Button").withButton("Undo", d, new XToast.ButtonClickListener() {
+        //listener will be executed on UI thread
+        XToast.create(this, "").withButton("Undo", d, new XToast.OnClickListener() {
             @Override
             public void onClick(XToast xtoast) {
                 xtoast.dismiss();
