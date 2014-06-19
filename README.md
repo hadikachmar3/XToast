@@ -66,6 +66,10 @@ Cancel all the other toasts before this one shows.
 ```java
 withButton(Charsequence, Drawable, XToast.ButtonClickListener)
 ```
+Note: If you want to show only the button, with no toast text, just do like this:
+```java
+XToast.create(Context, null).withButton()`
+```
 
 ### 8. Potision relative to a specified view
 ```java
