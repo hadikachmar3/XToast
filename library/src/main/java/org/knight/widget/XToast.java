@@ -120,15 +120,18 @@ public class XToast {
         if (mWindowManagerLayoutParams.windowAnimations == 0) {
             mWindowManagerLayoutParams.windowAnimations = Anim.TOAST;
         }
-        if (mWindowManagerLayoutParams.gravity == 0 && mWindowManagerLayoutParams.x == 0 && mWindowManagerLayoutParams.y == 0) {
-            mWindowManagerLayoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
-        }
         if (mButton == null) {
             mWindowManagerLayoutParams.width = LayoutParams.WRAP_CONTENT;
             mWindowManagerLayoutParams.flags |= LayoutParams.FLAG_NOT_TOUCHABLE;
+            if (mWindowManagerLayoutParams.gravity == 0 && mWindowManagerLayoutParams.x == 0 && mWindowManagerLayoutParams.y == 0) {
+                mWindowManagerLayoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+            }
         } else {
             mWindowManagerLayoutParams.width = LayoutParams.MATCH_PARENT;
             mWindowManagerLayoutParams.flags |= LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
+            mWindowManagerLayoutParams.gravity = Gravity.NO_GRAVITY;
+            mWindowManagerLayoutParams.x = 0;
+            mWindowManagerLayoutParams.y = 0;
             if (TextUtils.isEmpty(mTextView.getText())) {
                 mTextView.setVisibility(View.GONE);
                 mXToastView.findViewById(R.id.xtoast_splitter).setVisibility(View.GONE);
@@ -200,6 +203,14 @@ public class XToast {
         return this;
     }
 
+    /**
+     * Set the gravity for this toast. No effect when a button inside.
+     *
+     * @param gravity
+     * @param xOffset
+     * @param yOffset
+     * @return
+     */
     public XToast withGravity(int gravity, int xOffset, int yOffset) {
         mWindowManagerLayoutParams.gravity = gravity;
         mWindowManagerLayoutParams.x = xOffset;
