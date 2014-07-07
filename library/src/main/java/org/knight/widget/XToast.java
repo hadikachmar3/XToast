@@ -210,7 +210,7 @@ public class XToast {
     /**
      * Show toast relative to a specified view for this toast's left-top axis.
      * <p/>
-     * After this method has called, do not call withGravity() anymore because they could be messed up.
+     * After calling this method, do not call withGravity() anymore because they could be messed up.
      *
      * @param view
      * @param position see {@link org.knight.widget.XToast.Position} for built-in relative positions.
