@@ -31,7 +31,6 @@ import android.widget.TextView;
 import java.util.LinkedList;
 
 /**
- * TODO 动画效果不对
  * Custom toast, simplified version of SuperToasts.
  * <p/>
  * Now supports the following configurations:</br>
