@@ -96,4 +96,4 @@ withPosition(View, int, int, int)
 
 See position options in `XToast.Position`.
 
-__Note:__After this method has called, do not call withGravity() anymore because they could be messed up.
+**Note:** After this method has called, do not call withGravity() anymore because they could be messed up.
