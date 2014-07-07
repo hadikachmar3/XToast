@@ -25,6 +25,7 @@
     <string name="btn_anim">Custom Animation</string>
     <string name="btn_cover">Cover Previous</string>
     <string name="btn_button">Custom Button</string>
+    <string name="btn_button_forever">Custom Button(Shows Forever)</string>
     <string name="btn_position">Custom Position</string>
     <string name="btn_cancel_current">Cancel Current</string>
     <string name="btn_cancel_all">Cancel All</string>

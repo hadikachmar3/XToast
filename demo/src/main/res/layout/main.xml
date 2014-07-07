@@ -94,6 +94,13 @@
             android:text="@string/btn_button" />
 
         <Button
+            android:id="@+id/btn_button_forever"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="show"
+            android:text="@string/btn_button_forever" />
+
+        <Button
             android:id="@+id/btn_cancel_current"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

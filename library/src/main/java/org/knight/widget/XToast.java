@@ -31,16 +31,18 @@ import android.widget.TextView;
 import java.util.LinkedList;
 
 /**
+ * TODO 动画效果不对
  * Custom toast, simplified version of SuperToasts.
  * <p/>
  * Now supports the following configurations:</br>
  * 1. Text size/color.</br>
- * 2. Background resource/color.</br>
- * 3. Animation.</br>
- * 4. Gravity and offset.</br>
- * 5. Cover previous toast.</br>
- * 6. Integrate a button in the toast(text/icon/event).</br>
- * 7. Relative position to a specified view.
+ * 2. Duration
+ * 3. Background resource/color.</br>
+ * 4. Animation.</br>
+ * 5. Gravity and offset.</br>
+ * 6. Cover previous toast.</br>
+ * 7. Button integration(text/icon/event).</br>
+ * 8. Position relative to a specified view.
  *
  * @author knight
  */
@@ -58,23 +60,39 @@ public class XToast {
     private int mDuration;
     private boolean mCover;
 
+    //only have effect when withButton(...) is called
+    private boolean mDismissWhenTouchOutside;
+
+    /**
+     * Create a XToast instance.
+     *
+     * @param ctx  null is disallowed.
+     * @param text null is allowed for integrate a single button with no toast text.
+     * @return
+     */
     public static XToast create(Context ctx, CharSequence text) {
         if (ctx == null) {
-            throw new IllegalArgumentException("Context can't be null");
+            throw new IllegalArgumentException("Context is null");
         }
         if (text == null || text.length() == 0) {
             return new XToast(ctx);
         } else {
-            return new XToast(ctx).withText(text);
+            return new XToast(ctx).withText(text).withTextColor(ctx.getResources().getColor(R.color.xtoast_text));
         }
     }
 
-    public static void cancelAll() {
-        XToastQueue.getInstance().removeAll();
+    /**
+     * A static version for dismiss all the toasts.
+     */
+    public static void dismissAll() {
+        XToastQueue.getInstance().dequeueAll();
     }
 
-    public static void cancelCurrent() {
-        XToastQueue.getInstance().removeCurrent();
+    /**
+     * A static version for dismiss current toast.
+     */
+    public static void dismissCurrent() {
+        XToastQueue.getInstance().dequeueCurrent();
     }
 
     private XToast(Context ctx) {
@@ -84,21 +102,20 @@ public class XToast {
 
     private void initViews() {
         mXToastView = LayoutInflater.from(mContext).inflate(R.layout.xtoast, null);
-        if (mXToastView == null) {
-            return;
+        if (mXToastView != null) {
+            mRootLayout = (LinearLayout) mXToastView.findViewById(R.id.xtoast_root_layout);
+            mTextView = (TextView) mXToastView.findViewById(R.id.xtoast_text);
+            mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+            mWindowManagerLayoutParams = new WindowManager.LayoutParams();
         }
-        mRootLayout = (LinearLayout) mXToastView.findViewById(R.id.xtoast_root_layout);
-        mTextView = (TextView) mXToastView.findViewById(R.id.xtoast_text);
-        mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-        mWindowManagerLayoutParams = new LayoutParams();
     }
 
     private void configure() {
         if (mDuration == 0) {
             mDuration = Duration.SHORT;
         }
-        mWindowManagerLayoutParams.width = LayoutParams.WRAP_CONTENT;
         mWindowManagerLayoutParams.height = LayoutParams.WRAP_CONTENT;
+        mWindowManagerLayoutParams.flags = LayoutParams.FLAG_NOT_FOCUSABLE;
         mWindowManagerLayoutParams.type = LayoutParams.TYPE_TOAST;
         mWindowManagerLayoutParams.format = PixelFormat.TRANSLUCENT;
         if (mWindowManagerLayoutParams.windowAnimations == 0) {
@@ -107,14 +124,19 @@ public class XToast {
         if (mWindowManagerLayoutParams.gravity == 0 && mWindowManagerLayoutParams.x == 0 && mWindowManagerLayoutParams.y == 0) {
             mWindowManagerLayoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
         }
-        mWindowManagerLayoutParams.flags = LayoutParams.FLAG_NOT_FOCUSABLE;
         if (mButton == null) {
+            mWindowManagerLayoutParams.width = LayoutParams.WRAP_CONTENT;
             mWindowManagerLayoutParams.flags |= LayoutParams.FLAG_NOT_TOUCHABLE;
         } else {
+            mWindowManagerLayoutParams.width = LayoutParams.MATCH_PARENT;
             mWindowManagerLayoutParams.flags |= LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
             if (TextUtils.isEmpty(mTextView.getText())) {
                 mTextView.setVisibility(View.GONE);
                 mXToastView.findViewById(R.id.xtoast_splitter).setVisibility(View.GONE);
+            }
+            if (mDismissWhenTouchOutside) {
+                mXToastView.setTag(this);
+                mXToastView.setOnTouchListener(mTouchListener);
             }
         }
     }
@@ -125,7 +147,7 @@ public class XToast {
     }
 
     public void dismiss() {
-        XToastQueue.getInstance().remove(this);
+        XToastQueue.getInstance().dequeue(this);
     }
 
     public boolean isShown() {
@@ -162,6 +184,18 @@ public class XToast {
         return this;
     }
 
+    /**
+     * Use an animation resource.
+     * <p/>
+     * Must be a system resource. It means you can not define your own animation resource to use.
+     * <p/>
+     * See {@link org.knight.widget.XToast.Anim} for some built-in animations.
+     * <p/>
+     * More animations see android.R.style.Animation.xxx
+     *
+     * @param animation
+     * @return
+     */
     public XToast withAnimation(int animation) {
         mWindowManagerLayoutParams.windowAnimations = animation;
         return this;
@@ -174,6 +208,17 @@ public class XToast {
         return this;
     }
 
+    /**
+     * Show toast relative to a specified view for this toast's left-top axis.
+     * <p/>
+     * After this method has called, do not call withGravity() anymore because they could be messed up.
+     *
+     * @param view
+     * @param position see {@link org.knight.widget.XToast.Position} for built-in relative positions.
+     * @param xOffset
+     * @param yOffset
+     * @return
+     */
     public XToast withPosition(View view, int position, int xOffset, int yOffset) {
         int[] pos = new int[2];
         view.getLocationOnScreen(pos);
@@ -245,12 +290,37 @@ public class XToast {
         return withGravity(Gravity.TOP | Gravity.LEFT, xOffset, yOffset);
     }
 
+    /**
+     * Whether remove and dismiss all the other toasts before this one shows.
+     *
+     * @param cover if true all the other toasts in the queue will be removed and dismissed.
+     * @return
+     */
     public XToast withCover(boolean cover) {
         mCover = cover;
         return this;
     }
 
-    public XToast withButton(CharSequence text, Drawable icon, final OnClickListener listener) {
+    /**
+     * Integrate a button in the toast.
+     * <p/>
+     * The text and icon params could be null or empty without any exceptions thrown.
+     * <p/>
+     * {text=null} means the button does not have text(Probably only has an icon)
+     * <p/>
+     * {text=empty} means the button has an empty text.
+     * <p/>
+     * {icon=null} means the button does not have icon(Probably only has text)
+     * <p/>
+     * {text=null && icon=null} means no button.
+     *
+     * @param text                    the button text
+     * @param icon                    the button icon
+     * @param listener                click listener for the button(not for the whole toast)
+     * @param dismissWhenTouchOutside whether to dismiss the toast when touch outside the toast
+     * @return
+     */
+    public XToast withButton(CharSequence text, Drawable icon, OnButtonClickListener listener, boolean dismissWhenTouchOutside) {
         if (text == null && icon == null) {
             return this;
         }
@@ -260,29 +330,73 @@ public class XToast {
         ((ViewStub) mXToastView.findViewById(R.id.xtoast_viewstub)).inflate();
         mButton = (Button) mXToastView.findViewById(R.id.xtoast_button);
         if (mButton != null) {
+            mDismissWhenTouchOutside = dismissWhenTouchOutside;
             if (text != null) {
                 mButton.setText(text);
+                mButton.setTextSize(mContext.getResources().getDimension(R.dimen.xtoast_button_text));
             }
             if (icon != null) {
                 icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
                 mButton.setCompoundDrawables(icon, null, null, null);
             }
-            mButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onClick(XToast.this);
-                }
-            });
+            mButton.setTag(new Object[]{listener, this});
+            mButton.setOnClickListener(mClickListener);
         }
         return this;
     }
 
-    public static class Duration {
-        public static final int SHORT = 2000;
-        public static final int MEDIUM = 4000;
-        public static final int LONG = 6000;
+    public XToast withButton(CharSequence text, Drawable icon, final OnButtonClickListener listener) {
+        return withButton(text, icon, listener, false);
     }
 
+    public XToast withButton(CharSequence text, int icon, final OnButtonClickListener listener, boolean dismissWhenTouchOutside) {
+        return withButton(text, mContext.getResources().getDrawable(icon), listener, dismissWhenTouchOutside);
+    }
+
+    public XToast withButton(CharSequence text, int icon, final OnButtonClickListener listener) {
+        return withButton(text, mContext.getResources().getDrawable(icon), listener, false);
+    }
+
+    private static View.OnTouchListener mTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                Object o = v.getTag();
+                if (o != null && o instanceof XToast) {
+                    XToastQueue.getInstance().dequeue((XToast) o);
+                }
+                return true;
+            }
+            return false;
+        }
+    };
+
+    private static View.OnClickListener mClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Object o = v.getTag();
+            if (o != null && o instanceof Object[]) {
+                OnButtonClickListener l = (OnButtonClickListener) ((Object[]) o)[0];
+                XToast x = (XToast) ((Object[]) o)[1];
+                if (l != null && x != null) {
+                    l.onClick(x);
+                }
+            }
+        }
+    };
+
+    /**
+     * How long the toast will be show in milliseconds.
+     */
+    public static class Duration {
+        public static final int SHORT = 2000;
+        public static final int LONG = 4000;
+        public static final int FOREVER = -1;
+    }
+
+    /**
+     * Built-in animations.
+     */
     public static class Anim {
         public static final int TOAST = android.R.style.Animation_Toast;
         public static final int SCALE = android.R.style.Animation_Dialog;
@@ -290,6 +404,9 @@ public class XToast {
         public static final int FLY = android.R.style.Animation_Translucent;
     }
 
+    /**
+     * Use for withPosition() method to specify the view's position for the toast to show.
+     */
     public static class Position {
         public static final int LEFT = 0x0001;
         public static final int TOP = LEFT << 1;
@@ -319,22 +436,25 @@ public class XToast {
         private void enqueue(XToast xtoast) {
             if (xtoast != null) {
                 if (xtoast.mCover) {
-                    XToast x = queue.peek();
+                    XToast x;
                     synchronized (queue) {
+                        x = queue.peek();
                         queue.clear();
                         queue.add(xtoast);
                     }
-                    remove(x);
-                    return;
-                }
-                synchronized (queue) {
-                    queue.add(xtoast);
+                    if (x != null) {
+                        dismiss(x);
+                    }
+                } else {
+                    synchronized (queue) {
+                        queue.add(xtoast);
+                    }
                 }
             }
             next();
         }
 
-        private void remove(XToast xtoast) {
+        private void dequeue(XToast xtoast) {
             if (xtoast != null) {
                 synchronized (queue) {
                     queue.remove(xtoast);
@@ -344,29 +464,43 @@ public class XToast {
             next();
         }
 
-        private void removeCurrent() {
+        private void dequeueCurrent() {
             XToast x;
             synchronized (queue) {
                 x = queue.poll();
             }
-            if (x == null) {
-                return;
+            if (x != null) {
+                dismiss(x);
             }
-            dismiss(x);
             next();
         }
 
-        private void removeAll() {
+        private void dequeueAll() {
             XToast x;
             synchronized (queue) {
                 x = queue.peek();
                 queue.clear();
             }
-            if (x == null) {
-                return;
+            if (x != null) {
+                dismiss(x);
             }
-            dismiss(x);
-            next();
+        }
+
+        private void next() {
+            XToast x;
+            synchronized (queue) {
+                x = queue.peek();
+            }
+            if (x != null) {
+                if (x.mDuration == Duration.FOREVER) {
+                    synchronized (queue) {
+                        queue.remove(x);
+                    }
+                }
+                if (!x.isShown()) {
+                    show(x);
+                }
+            }
         }
 
         private void show(XToast xtoast) {
@@ -376,9 +510,11 @@ public class XToast {
                 View v = xtoast.mXToastView;
                 if (wm != null && p != null && v != null) {
                     wm.addView(v, p);
-                    Message msg = Message.obtain(this, 0, xtoast);
-                    if (msg != null) {
-                        sendMessageDelayed(msg, xtoast.mDuration + 1000);
+                    if (xtoast.mDuration != Duration.FOREVER) {
+                        Message msg = Message.obtain(this, 0, xtoast);
+                        if (msg != null) {
+                            sendMessageDelayed(msg, xtoast.mDuration + 200);
+                        }
                     }
                 }
             }
@@ -395,29 +531,15 @@ public class XToast {
             }
         }
 
-        private void next() {
-            XToast x;
-            synchronized (queue) {
-                x = queue.peek();
-            }
-            if (x == null) {
-                return;
-            }
-            if (x.isShown()) {
-                return;
-            }
-            show(x);
-        }
-
         @Override
         public void handleMessage(Message msg) {
             if (msg.obj != null) {
-                remove((XToast) msg.obj);
+                dequeue((XToast) msg.obj);
             }
         }
     }
 
-    public static interface OnClickListener {
+    public static interface OnButtonClickListener {
         void onClick(XToast xtoast);
     }
 }

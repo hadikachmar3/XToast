@@ -31,10 +31,11 @@
 
     <Button
         android:id="@+id/xtoast_button"
-        android:paddingLeft="16dp"
+        android:paddingLeft="8dp"
         android:paddingRight="16dp"
         android:drawablePadding="8dp"
         android:gravity="center"
+        android:maxLines="2"
         android:background="@drawable/xtoast_button_selector"
         android:minHeight="48dp"
         android:layout_width="match_parent"

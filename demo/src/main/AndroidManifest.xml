@@ -9,6 +9,7 @@
             android:targetSdkVersion="19" />
 
     <application
+        android:theme="@android:style/Theme.Holo"
             android:label="XToast Demo"
             android:icon="@drawable/ic_launcher">
         <activity

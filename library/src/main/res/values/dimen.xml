@@ -16,7 +16,5 @@
   -->
 
 <resources>
-    <drawable name="xtoast_button_normal">@android:color/transparent</drawable>
-    <drawable name="xtoast_button_pressed">#FF737373</drawable>
-    <color name="xtoast_text">#FFFFFFFF</color>
+    <dimen name="xtoast_button_text">5sp</dimen>
 </resources>

@@ -61,7 +61,9 @@ public class MainActivity extends Activity {
     }
 
     private void showAnim() {
-        XToast.create(this, "Animation Popup").withAnimation(XToast.Anim.POPUP).show();
+        //XToast.create(this, "Animation Popup").withAnimation(XToast.Anim.POPUP).show();
+        XToast.create(this, "Animation FLY").withAnimation(XToast.Anim.FLY).show();
+        //Toast.makeText(this, "xxx", Toast.LENGTH_SHORT).show();
     }
 
     private void showCover() {
@@ -75,7 +77,7 @@ public class MainActivity extends Activity {
     private void showButton() {
         Drawable d = getResources().getDrawable(R.drawable.icon_undo);
         //listener will be executed on UI thread
-        XToast.create(this, "").withButton("Undo", d, new XToast.OnClickListener() {
+        XToast.create(this, "Button").withButton("Undo", d, new XToast.OnButtonClickListener() {
             @Override
             public void onClick(XToast xtoast) {
                 xtoast.dismiss();
@@ -84,12 +86,24 @@ public class MainActivity extends Activity {
         }).show();
     }
 
+    private void showButtonForever() {
+        Drawable d = getResources().getDrawable(R.drawable.icon_undo);
+        //listener will be executed on UI thread
+        XToast.create(this, "Button shows forever until dismissed manually").withDuration(XToast.Duration.FOREVER).withButton("Undo", d, new XToast.OnButtonClickListener() {
+            @Override
+            public void onClick(XToast xtoast) {
+                xtoast.dismiss();
+                XToast.create(MainActivity.this, "Click Event").show();
+            }
+        }, true).show();
+    }
+
     private void cancelCurrent() {
-        XToast.cancelCurrent();
+        XToast.dismissCurrent();
     }
 
     private void cancelAll() {
-        XToast.cancelAll();
+        XToast.dismissAll();
     }
 
     public void show(View v) {
@@ -132,6 +146,10 @@ public class MainActivity extends Activity {
 
             case R.id.btn_button:
                 showButton();
+                break;
+
+            case R.id.btn_button_forever:
+                showButtonForever();
                 break;
 
             case R.id.btn_cancel_current:
