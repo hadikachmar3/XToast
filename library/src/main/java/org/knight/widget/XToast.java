@@ -340,6 +340,7 @@ public class XToast {
             mDismissWhenTouchOutside = dismissWhenTouchOutside;
             if (text != null) {
                 mButton.setText(text);
+                mButton.setTextColor(mContext.getResources().getColor(R.color.xtoast_text));
                 mButton.setTextSize(mContext.getResources().getDimension(R.dimen.xtoast_button_text));
             }
             if (icon != null) {

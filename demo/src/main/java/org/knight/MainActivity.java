@@ -17,18 +17,47 @@
 package org.knight;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import org.knight.widget.XToast;
 
 public class MainActivity extends Activity {
+    private boolean isLightTheme;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isLightTheme = getIntent().getBooleanExtra("isLightTheme", false);
+        if (isLightTheme) {
+            setTheme(android.R.style.Theme_Holo_Light);
+        } else {
+            setTheme(android.R.style.Theme_Holo);
+        }
         setContentView(R.layout.main);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.actions, menu);
+        menu.getItem(0).setTitle(isLightTheme ? "Dark" : "Light");
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.theme) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("isLightTheme", !isLightTheme);
+            startActivity(intent);
+            finish();
+        }
+        return true;
     }
 
     private void showNormal() {
