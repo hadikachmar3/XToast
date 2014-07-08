@@ -79,7 +79,9 @@ Cancel all the other toasts before this one shows.
 
 ```java
 withButton(CharSequence, Drawable, XToast.ButtonClickListener)
+withButton(CharSequence, Drawable, XToast.ButtonClickListener, boolean)
 withButton(CharSequence, int, XToast.ButtonClickListener)
+withButton(CharSequence, int, XToast.ButtonClickListener, boolean)
 ```
 
 Note: If you want to show only the button, with no toast text, just do like this:
