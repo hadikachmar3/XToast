@@ -61,9 +61,7 @@ public class MainActivity extends Activity {
     }
 
     private void showAnim() {
-        //XToast.create(this, "Animation Popup").withAnimation(XToast.Anim.POPUP).show();
         XToast.create(this, "Animation FLY").withAnimation(XToast.Anim.FLY).show();
-        //Toast.makeText(this, "xxx", Toast.LENGTH_SHORT).show();
     }
 
     private void showCover() {
