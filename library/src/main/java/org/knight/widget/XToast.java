@@ -64,6 +64,9 @@ public class XToast {
 
     /**
      * Create a XToast instance.
+     * <p/>
+     * The toast will dismiss immediately when your Activity destroyed if you use the context with Activity scope,
+     * just pass the application context instead to change this behavior.
      *
      * @param ctx  null is disallowed.
      * @param text null is allowed for integrate a single button with no toast text.
